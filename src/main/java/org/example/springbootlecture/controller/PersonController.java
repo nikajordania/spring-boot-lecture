@@ -1,7 +1,6 @@
 package org.example.springbootlecture.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,6 +22,8 @@ public class PersonController {
         this.personRepository = personRepository;
     }
 
+    // Any code written inside @Operation, @ApiResponses, @ApiResponse, or @Parameter annotations is used ONLY for Swagger / OpenAPI documentation.
+    // These annotations help generate readable API docs but are NOT required for API to work correctly.
     @Operation(summary = "Get all users")
     @GetMapping
     public List<Person> getAllPersons() {
@@ -40,8 +41,7 @@ public class PersonController {
                     content = @Content)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Person> getPersonById(@Parameter(description = "ID of the user to be searched")
-                                                @PathVariable int id) {
+    public ResponseEntity<Person> getPersonById(@PathVariable int id) {
         return personRepository.findById(id)
                 .map(person -> ResponseEntity.ok().body(person))
                 .orElse(ResponseEntity.notFound().build());
@@ -67,10 +67,7 @@ public class PersonController {
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Person> updatePerson(
-            @Parameter(description = "ID of the user to be updated")
-            @PathVariable int id,
-            @RequestBody Person personDetails) {
+    public ResponseEntity<Person> updatePerson(@PathVariable int id, @RequestBody Person personDetails) {
         return personRepository.findById(id)
                 .map(person -> {
                     person.setName(personDetails.getName());
@@ -88,8 +85,7 @@ public class PersonController {
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deletePerson(@Parameter(description = "ID of the user to be deleted")
-                                               @PathVariable int id) {
+    public ResponseEntity<Object> deletePerson(@PathVariable int id) {
         return personRepository.findById(id)
                 .map(person -> {
                     personRepository.delete(person);
@@ -99,27 +95,20 @@ public class PersonController {
 
     @Operation(summary = "Get all users by group name")
     @GetMapping("/group/{groupName}")
-    public List<Person> getAllPersonsByGroupName(@Parameter(description = "Group name of the user to be searched")
-                                                 @PathVariable String groupName) {
+    public List<Person> getAllPersonsByGroupName(@PathVariable String groupName) {
         return personRepository.findByGroupName(groupName);
     }
 
     @Operation(summary = "Get all users by query param age between defined range")
     @GetMapping("/age")
-    public List<Person> getAllPersonsByAge(@Parameter(description = "Minimum age of the user to be searched")
-                                           @RequestParam int minAge,
-                                           @Parameter(description = "Maximum age of the user to be searched")
-                                           @RequestParam int maxAge) {
+    public List<Person> getAllPersonsByAge(@RequestParam int minAge, @RequestParam int maxAge) {
         return personRepository.findByAgeBetween(minAge, maxAge);
     }
 
     @Operation(summary = "Get all users by group name and age less than defined value")
 
     @GetMapping("/group/{groupName}/age")
-    public List<Person> getAllPersonsByGroupNameAndAgeLessThan(@Parameter(description = "Group name of the user to be searched")
-                                                               @PathVariable String groupName,
-                                                               @Parameter(description = "Maximum age of the user to be searched")
-                                                               @RequestParam int age) {
+    public List<Person> getAllPersonsByGroupNameAndAgeLessThan(@PathVariable String groupName, @RequestParam int age) {
         return personRepository.findByGroupNameAndAgeLessThan(groupName, age);
     }
 
