@@ -6,7 +6,7 @@ https://start.spring.io/
 # Spring Boot application.properties
 https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html
 
-https://www.javatpoint.com/spring-boot-properties
+https://www.tpointtech.com/spring-boot-properties
 
 # pom.xml
 https://medium.com/@databackendtech/spring-boot-java-framework-cheat-sheet-of-maven-pom-xml-cb8ef2f0700d
